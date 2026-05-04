@@ -1,0 +1,175 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="mb-12">
+        <a href="/" class="text-slate-500 hover:text-emerald-600 transition-colors flex items-center mb-4">
+            <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> Back to Home
+        </a>
+        <h1 class="text-4xl font-extrabold text-slate-900">Fertilizer Advice</h1>
+        <p class="text-slate-500 mt-2 text-lg">Get tailored nutrient recommendations for your specific crop.</p>
+    </div>
+
+    <form id="fertilizer-form" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Crop Selection -->
+            <div class="glass-card rounded-3xl p-8">
+                <div class="flex items-center space-x-3 mb-6">
+                    <i data-lucide="leaf" class="w-5 h-5 text-emerald-600"></i>
+                    <h3 class="text-xl font-bold">Crop & Soil Type</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Select Crop</label>
+                        <select name="Crop" class="input-field appearance-none" required>
+                            <option value="">Choose a crop...</option>
+                            {% for crop in crops %}
+                            <option value="{{ crop }}">{{ crop }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Soil Type</label>
+                        <select name="Soil" class="input-field appearance-none">
+                            <option value="Sandy">Sandy</option>
+                            <option value="Loamy">Loamy</option>
+                            <option value="Clayey">Clayey</option>
+                            <option value="Silty">Silty</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nutrient Inputs -->
+            <div class="glass-card rounded-3xl p-8">
+                <div class="flex items-center space-x-3 mb-6">
+                    <i data-lucide="beaker" class="w-5 h-5 text-emerald-600"></i>
+                    <h3 class="text-xl font-bold">Nutrient Levels</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Nitrogen (N)</label>
+                        <input type="number" name="N" class="input-field" placeholder="e.g. 50" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Phosphorous (P)</label>
+                        <input type="number" name="P" class="input-field" placeholder="e.g. 30" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Potassium (K)</label>
+                        <input type="number" name="K" class="input-field" placeholder="e.g. 20" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-1">
+            <div class="bg-slate-900 rounded-3xl p-8 text-white sticky top-24">
+                <h3 class="text-xl font-bold mb-4">Precision Analysis</h3>
+                <p class="text-slate-400 text-sm mb-6 leading-relaxed">
+                    Our system compares your current soil profile with the optimal requirements for your selected crop.
+                </p>
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-center text-sm text-slate-300">
+                        <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 mr-3"></i> Optimized Growth
+                    </li>
+                    <li class="flex items-center text-sm text-slate-300">
+                        <i data-lucide="check-circle" class="w-4 h-4 text-emerald-500 mr-3"></i> Resource Efficiency
+                    </li>
+                </ul>
+                <button type="submit" class="btn-primary w-full py-4 text-lg border-none">Get Advice</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Result Display -->
+    <div id="result-container" class="hidden mt-16 max-w-4xl mx-auto animate-fade-in">
+        <div class="glass-card rounded-3xl overflow-hidden border-none shadow-2xl">
+            <div class="bg-emerald-600 p-8 text-white">
+                <h2 class="text-3xl font-bold">Fertilizer Recommendation</h2>
+                <p id="result-subtitle" class="opacity-80 mt-1"></p>
+            </div>
+            <div class="p-8">
+                <div id="recommendations-list" class="space-y-4"></div>
+                
+                <div id="soil-note" class="hidden mt-8 p-4 bg-slate-50 rounded-2xl flex items-start text-slate-600 border border-slate-200">
+                    <i data-lucide="info" class="w-5 h-5 mr-3 mt-1 text-slate-400"></i>
+                    <p class="text-sm">
+                        <span class="font-bold text-slate-900">Note:</span> Sandy soil may lose nutrients faster due to leaching. Consider split-application.
+                    </p>
+                </div>
+
+                <div class="text-center mt-12">
+                    <button onclick="window.location.reload()" class="text-emerald-600 font-bold hover:underline">Calculate Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('fertilizer-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+        
+        const btn = e.target.querySelector('button');
+        btn.disabled = true;
+        btn.innerText = 'Analyzing...';
+
+        try {
+            const response = await fetch('/predict-fertilizer', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            
+            if (result.recommendation) {
+                const list = document.getElementById('recommendations-list');
+                list.innerHTML = '';
+                
+                result.recommendation.forEach(rec => {
+                    const parts = rec.split('→');
+                    const title = parts[0].trim();
+                    const advice = parts[1]?.trim() || "Balanced soil → No action needed";
+                    
+                    const item = document.createElement('div');
+                    item.className = `flex items-start p-5 rounded-2xl border ${
+                        rec.includes('low') ? 'bg-amber-50 text-amber-800 border-amber-100' : 
+                        rec.includes('high') ? 'bg-blue-50 text-blue-800 border-blue-100' : 
+                        'bg-emerald-50 text-emerald-800 border-emerald-100'
+                    }`;
+                    
+                    const icon = rec.includes('low') ? 'alert-circle' : (rec.includes('high') ? 'layers' : 'check-circle');
+                    
+                    item.innerHTML = `
+                        <i data-lucide="${icon}" class="w-6 h-6 mr-4 mt-0.5"></i>
+                        <div>
+                            <p class="font-bold text-lg">${title}</p>
+                            <p class="text-sm opacity-80">${advice}</p>
+                        </div>
+                    `;
+                    list.appendChild(item);
+                });
+
+                document.getElementById('result-subtitle').innerText = `For ${data.Crop} in ${data.Soil} soil`;
+                document.getElementById('result-container').classList.remove('hidden');
+                document.getElementById('fertilizer-form').classList.add('hidden');
+                
+                if (data.Soil === 'Sandy') {
+                    document.getElementById('soil-note').classList.remove('hidden');
+                }
+                lucide.createIcons();
+            } else {
+                alert(result.error || 'Failed to get recommendation');
+            }
+        } catch (err) {
+            alert('An error occurred');
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'Get Advice';
+        }
+    });
+</script>
+{% endblock %}

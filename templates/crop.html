@@ -1,0 +1,144 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="mb-12">
+        <a href="/" class="text-slate-500 hover:text-emerald-600 transition-colors flex items-center mb-4">
+            <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i> Back to Home
+        </a>
+        <h1 class="text-4xl font-extrabold text-slate-900">Crop Recommendation</h1>
+        <p class="text-slate-500 mt-2 text-lg">Input your soil and environmental data to find the best crop.</p>
+    </div>
+
+    <form id="crop-form" class="space-y-8">
+        <!-- Section 1: Soil Nutrients -->
+        <div class="glass-card rounded-3xl p-8">
+            <div class="flex items-center space-x-3 mb-6 border-b border-slate-100 pb-4">
+                <i data-lucide="beaker" class="w-5 h-5 text-emerald-600"></i>
+                <h3 class="text-xl font-bold">Section 1: Soil Nutrients</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Nitrogen (N)</label>
+                    <input type="number" name="N" class="input-field" placeholder="e.g. 90" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Phosphorous (P)</label>
+                    <input type="number" name="P" class="input-field" placeholder="e.g. 42" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Potassium (K)</label>
+                    <input type="number" name="K" class="input-field" placeholder="e.g. 43" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Environmental Conditions -->
+        <div class="glass-card rounded-3xl p-8">
+            <div class="flex items-center space-x-3 mb-6 border-b border-slate-100 pb-4">
+                <i data-lucide="cloud-rain" class="w-5 h-5 text-emerald-600"></i>
+                <h3 class="text-xl font-bold">Section 2: Environmental Conditions</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Temperature (°C)</label>
+                    <input type="number" step="0.01" name="temperature" class="input-field" placeholder="e.g. 20.8" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Humidity (%)</label>
+                    <input type="number" step="0.01" name="humidity" class="input-field" placeholder="e.g. 82.1" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold mb-2">Rainfall (mm)</label>
+                    <input type="number" step="0.01" name="rainfall" class="input-field" placeholder="e.g. 202.9" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Soil Condition -->
+        <div class="glass-card rounded-3xl p-8">
+            <div class="flex items-center space-x-3 mb-6 border-b border-slate-100 pb-4">
+                <i data-lucide="thermometer" class="w-5 h-5 text-emerald-600"></i>
+                <h3 class="text-xl font-bold">Section 3: Soil Condition</h3>
+            </div>
+            <div class="max-w-xs">
+                <label class="block text-sm font-semibold mb-2">pH Level</label>
+                <input type="number" step="0.01" name="ph" class="input-field" placeholder="e.g. 6.5" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-primary w-full md:max-w-md mx-auto block py-4 text-xl">
+            Predict Crop
+        </button>
+    </form>
+
+    <!-- Result Modal/Display -->
+    <div id="result-container" class="hidden mt-16 animate-fade-in max-w-2xl mx-auto">
+        <div class="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-3xl p-1 shadow-2xl">
+            <div class="bg-white rounded-[1.4rem] p-10 text-center">
+                <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i data-lucide="sprout" class="w-10 h-10 text-emerald-600"></i>
+                </div>
+                <h2 class="text-slate-500 font-bold uppercase tracking-widest mb-2">Recommended Crop</h2>
+                <p id="crop-name" class="text-5xl font-black text-slate-900 mb-8 capitalize"></p>
+                <div class="grid gap-4 text-left">
+                    <div class="flex items-start p-4 bg-slate-50 rounded-2xl">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 mr-3 mt-1"></i>
+                        <p class="text-sm text-slate-600">Perfect match for your soil's pH level and nutrient profile.</p>
+                    </div>
+                    <div class="flex items-start p-4 bg-slate-50 rounded-2xl">
+                        <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500 mr-3 mt-1"></i>
+                        <p class="text-sm text-slate-600">Suitable for the current temperature and humidity conditions.</p>
+                    </div>
+                    <div id="rainfall-warning" class="hidden flex items-start p-4 bg-amber-50 rounded-2xl text-amber-700 border border-amber-100">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 mr-3 mt-1"></i>
+                        <p class="text-sm font-medium">Low rainfall detected. Ensure consistent irrigation for optimal growth.</p>
+                    </div>
+                </div>
+                <button onclick="window.location.reload()" class="mt-10 text-emerald-600 font-bold hover:underline">Try Another Prediction</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('crop-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+        
+        // Show loading state
+        const btn = e.target.querySelector('button');
+        btn.disabled = true;
+        btn.innerHTML = '<i data-lucide="loader-2" class="w-6 h-6 animate-spin mx-auto"></i>';
+        lucide.createIcons();
+
+        try {
+            const response = await fetch('/predict-crop', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            
+            if (result.prediction) {
+                document.getElementById('crop-name').innerText = result.prediction;
+                document.getElementById('result-container').classList.remove('hidden');
+                document.getElementById('crop-form').classList.add('hidden');
+                
+                if (parseFloat(data.rainfall) < 100) {
+                    document.getElementById('rainfall-warning').classList.remove('hidden');
+                }
+                lucide.createIcons();
+            } else {
+                alert(result.error || 'Prediction failed');
+            }
+        } catch (err) {
+            alert('An error occurred');
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'Predict Crop';
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="relative min-h-[80vh] flex items-center pt-20 pb-32 overflow-hidden bg-slate-900">
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 z-0">
+        <img src="/static/images/farm_background.png" alt="Farm" class="w-full h-full object-cover opacity-40">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-900/60 via-slate-900/40 to-slate-50"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 relative z-10 text-center">
+        <div class="inline-flex items-center space-x-2 bg-emerald-500/20 backdrop-blur-md text-emerald-300 px-4 py-2 rounded-full mb-8 border border-emerald-500/30">
+            <i data-lucide="leaf" class="w-4 h-4"></i>
+            <span class="text-sm font-bold uppercase tracking-wider">AI-Powered Insights</span>
+        </div>
+        <h1 class="text-5xl md:text-8xl font-extrabold text-white mb-8 leading-tight animate-fade-in drop-shadow-2xl">
+            Smart Agriculture <br>
+            <span class="text-emerald-400">Assistant</span>
+        </h1>
+        <p class="text-xl text-slate-200 mb-12 max-w-2xl mx-auto leading-relaxed drop-shadow">
+            Make data-driven farming decisions using AI-powered insights. Optimize your yield and maintain soil health with precision recommendations.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <a href="/crop" class="btn-glow-emerald w-full sm:w-auto text-lg py-4 px-10 rounded-2xl font-bold transition-all transform hover:scale-105 active:scale-95">
+                Start Crop Recommendation
+            </a>
+            <a href="/fertilizer" class="btn-glow-amber w-full sm:w-auto text-lg py-4 px-10 rounded-2xl font-bold transition-all transform hover:scale-105 active:scale-95">
+                Get Fertilizer Advice
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+    .btn-glow-emerald {
+        background: #10b981;
+        color: white;
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-glow-emerald:hover {
+        box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
+        background: #059669;
+    }
+    .btn-glow-amber {
+        background: #f59e0b;
+        color: white;
+        box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+    }
+    .btn-glow-amber:hover {
+        box-shadow: 0 0 30px rgba(245, 158, 11, 0.6);
+        background: #d97706;
+    }
+</style>
+
+<section class="py-24 bg-white">
+    <div class="max-w-5xl mx-auto px-4">
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Crop Card -->
+            <a href="/crop" class="group glass-card rounded-3xl p-8 transition-all hover:-translate-y-2 hover:shadow-2xl">
+                <div class="w-16 h-16 bg-emerald-600 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform">
+                    <i data-lucide="sprout" class="w-8 h-8 text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Crop Recommendation</h3>
+                <p class="text-slate-600 mb-8">Analyze soil nutrients and environment to find the perfect crop for your land.</p>
+                <span class="flex items-center text-emerald-600 font-bold">
+                    Explore <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </span>
+            </a>
+            <!-- Fertilizer Card -->
+            <a href="/fertilizer" class="group glass-card rounded-3xl p-8 transition-all hover:-translate-y-2 hover:shadow-2xl">
+                <div class="w-16 h-16 bg-amber-500 rounded-2xl flex items-center justify-center mb-6 group-hover:rotate-6 transition-transform">
+                    <i data-lucide="droplets" class="w-8 h-8 text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Fertilizer Advice</h3>
+                <p class="text-slate-600 mb-8">Get tailored nutrient recommendations based on your current soil profile.</p>
+                <span class="flex items-center text-amber-600 font-bold">
+                    Explore <i data-lucide="arrow-right" class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </span>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
