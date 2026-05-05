@@ -8,6 +8,9 @@ AgriTech is a modern, scalable AI-driven platform designed to help farmers make 
 - **Modern API**: Built with FastAPI for high performance and asynchronous support.
 - **Service-Oriented**: Clean separation of business logic and API routes.
 
+https://github.com/user-attachments/assets/53830072-36b1-4158-8c17-963a6df65c7f
+
+
 ## 🛠️ Tech Stack
 - **Backend**: FastAPI, Pydantic, Jinja2
 - **ML/Data**: Scikit-Learn, Pandas, NumPy
