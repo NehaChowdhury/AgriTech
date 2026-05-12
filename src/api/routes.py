@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, UploadFile, File
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from src.models.schemas import CropInput, FertilizerInput
@@ -44,3 +44,21 @@ async def predict_fertilizer(data: FertilizerInput):
     except Exception as e:
         logger.error(f"Fertilizer logic error: {e}")
         raise HTTPException(status_code=500, detail="Recommendation service error")
+
+@router.get("/disease", response_class=HTMLResponse)
+async def disease_page(request: Request):
+    return templates.TemplateResponse(request=request, name="disease.html")
+
+@router.post("/predict-disease")
+async def predict_disease(file: UploadFile = File(...)):
+    try:
+        # Validate file type
+        if not file.content_type.startswith("image/"):
+            raise HTTPException(status_code=400, detail="File provided is not an image.")
+        
+        contents = await file.read()
+        prediction = model_service.predict_disease(contents)
+        return prediction
+    except Exception as e:
+        logger.error(f"Disease prediction error: {e}")
+        raise HTTPException(status_code=500, detail="Disease prediction service error")

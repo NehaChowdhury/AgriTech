@@ -5,9 +5,11 @@ __pycache__/
 venv/
 .env
 
-# Models & Data (often ignored in git, but kept here if small)
-# models/*.pkl
-# data/*.csv
+# Models & Data
+models/*.pkl
+data/*.csv
+PlantDataset/
+data/rice_disease/
 
 # IDEs
 .vscode/

@@ -1,49 +1,132 @@
-# AgriTech - Smart Agriculture Decision Support System
+# 🌾 AgriTech: Smart Agriculture Decision Support System
 
-AgriTech is a modern, scalable AI-driven platform designed to help farmers make data-driven decisions. It provides ML-based crop recommendations and rule-based fertilizer advice based on soil and environmental data.
+[![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.15+-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)](https://www.tensorflow.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-## 🚀 Features
-- **Crop Recommendation**: Predictive analysis using a Random Forest model.
-- **Fertilizer Advice**: Precision nutrient recommendations based on crop requirements.
-- **Modern API**: Built with FastAPI for high performance and asynchronous support.
-- **Service-Oriented**: Clean separation of business logic and API routes.
+**AgriTech** is an AI-powered platform designed to empower farmers and agricultural experts with data-driven insights. By leveraging Machine Learning and Deep Learning models, the system provides accurate crop recommendations, fertilizer optimization, and real-time disease detection for sustainable farming.
+
+---
+
+## ✨ Key Features
+
+### 🚜 1. Crop Recommendation
+Predict the most suitable crop for your land using soil and environmental parameters.
+- **Model**: Random Forest Classifier
+- **Parameters**: Nitrogen (N), Phosphorus (P), Potassium (K), Temperature, Humidity, pH, and Rainfall.
+
+### 🧪 2. Fertilizer Optimizer
+Receive precise nutrient advice based on the specific requirements of your chosen crop and current soil health.
+- **Logic**: Rule-based optimization engine integrated with historical agricultural data.
+- **Goal**: Prevent over-fertilization and reduce environmental impact.
+
+### 🦠 3. Rice Disease Identification
+Upload an image of a rice leaf to identify common diseases instantly.
+- **Model**: Convolutional Neural Network (CNN)
+- **Classes**: Bacterial Leaf Blight, Brown Spot, Leaf Smut.
+- **Accuracy**: Optimized for mobile-captured images.
+- **Dataset**: [Rice Leaf Diseases Dataset](https://www.kaggle.com/datasets/vbookshelf/rice-leaf-diseases) (Used for training).
+
+---
 
 https://github.com/user-attachments/assets/53830072-36b1-4158-8c17-963a6df65c7f
 
 
 ## 🛠️ Tech Stack
-- **Backend**: FastAPI, Pydantic, Jinja2
-- **ML/Data**: Scikit-Learn, Pandas, NumPy
-- **Frontend**: Tailwind CSS, Lucide Icons
+
+- **Backend**: [FastAPI](https://fastapi.tiangolo.com/) (Asynchronous, High Performance)
+- **Machine Learning**: Scikit-Learn (Random Forest)
+- **Deep Learning**: TensorFlow/Keras (CNN for Image Classification)
+- **Data Handling**: NumPy, Pandas
+- **Frontend**: Jinja2 Templates, Tailwind CSS, Lucide Icons
+- **Image Processing**: OpenCV, Pillow
+
+---
 
 ## 📁 Project Structure
+
 ```text
-├── src/                # Core application logic
-│   ├── api/            # API Route handlers
-│   ├── services/       # Business & ML services
-│   ├── core/           # Configuration & Settings
-│   └── models/         # Data schemas (Pydantic)
-├── data/               # Datasets
-├── models/             # Trained ML model binaries
-├── static/             # CSS, JS, and images
-├── templates/          # HTML templates (Jinja2)
-├── notebooks/          # Research & training notebooks
-└── requirements.txt    # Project dependencies
+├── src/
+│   ├── api/            # API endpoints and route definitions
+│   ├── core/           # Configuration and global settings
+│   ├── models/         # Pydantic data schemas
+│   ├── services/       # Business logic and ML inference services
+│   └── main.py         # Application entry point
+├── data/               # CSV datasets for training and reference
+├── models/             # Pre-trained model binaries (.pkl, .keras)
+├── static/             # Frontend assets (CSS, JS, Images)
+├── templates/          # HTML templates with Jinja2 syntax
+├── notebooks/          # Research and model training experiments
+├── requirements.txt    # Project dependencies
 ```
 
-## 🏁 Getting Started
+---
 
-### Local Setup
-1. Activate your virtual environment:
-   ```powershell
-   venv\Scripts\activate
-   ```
-2. Run the application:
+## 🚀 Getting Started
+
+### Prerequisites
+- Python 3.9 or higher
+- Virtual Environment (recommended)
+
+### Installation
+
+1. **Clone the repository**:
    ```bash
-   python -m uvicorn src.main:app --reload
+   git clone https://github.com/NehaChowdhury/AgriTech.git
+   cd AgriTech
    ```
 
-The application will be available at `http://127.0.0.1:8000`. You can access the interactive API documentation at `http://127.0.0.1:8000/docs`.
+2. **Set up Virtual Environment**:
+   ```powershell
+   python -m venv venv
+   .\venv\Scripts\activate
+   ```
+
+3. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Running the App
+
+Start the development server using Uvicorn:
+```bash
+uvicorn src.main:app --reload
+```
+
+The application will be accessible at `http://127.0.0.1:8000`.
+
+---
+
+## 📖 API Documentation
+
+AgriTech provides a fully documented REST API out of the box:
+- **Interactive Swagger UI**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- **Alternative ReDoc**: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+
+### Example Endpoint: Crop Prediction
+**POST** `/predict-crop`
+```json
+{
+  "N": 90,
+  "P": 42,
+  "K": 43,
+  "temperature": 20.8,
+  "humidity": 82.0,
+  "ph": 6.5,
+  "rainfall": 202.9
+}
+```
+
+---
+
+## 🤝 Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+---
 
 ## 📜 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 © 2026 AgriTech Decision Support System.

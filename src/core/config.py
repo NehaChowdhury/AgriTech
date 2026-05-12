@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     # Paths
     BASE_DIR: str = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     MODEL_PATH: str = os.path.join(BASE_DIR, 'models', 'crop_model.pkl')
+    DISEASE_MODEL_PATH: str = os.path.join(BASE_DIR, 'models', 'rice_disease_model.keras')
     DATA_PATH: str = os.path.join(BASE_DIR, 'data', 'fertilizer.csv')
     STATIC_DIR: str = os.path.join(BASE_DIR, 'static')
     TEMPLATE_DIR: str = os.path.join(BASE_DIR, 'templates')
