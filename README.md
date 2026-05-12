@@ -96,6 +96,7 @@ uvicorn src.main:app --reload
 The application will be accessible at `http://127.0.0.1:8000`.
 
 ---
+https://github.com/user-attachments/assets/00de98ec-abbf-4c42-8058-3ae24d74c11e
 
 ## 📖 API Documentation
 
@@ -107,6 +108,7 @@ AgriTech provides a fully documented REST API out of the box:
 **POST** `/predict-crop`
 ```json
 {
+
   "N": 90,
   "P": 42,
   "K": 43,
