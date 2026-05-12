@@ -7,9 +7,12 @@ venv/
 
 # Models & Data
 models/*.pkl
+models/*.keras
+*.keras
 data/*.csv
 PlantDataset/
 data/rice_disease/
+rice_disease/
 
 # IDEs
 .vscode/
