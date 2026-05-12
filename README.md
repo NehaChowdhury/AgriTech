@@ -40,7 +40,7 @@ https://github.com/user-attachments/assets/53830072-36b1-4158-8c17-963a6df65c7f
 - **Deep Learning**: TensorFlow/Keras (CNN for Image Classification)
 - **Data Handling**: NumPy, Pandas
 - **Frontend**: Jinja2 Templates, Tailwind CSS, Lucide Icons
-- **Image Processing**: OpenCV, Pillow
+- **Image Processing**: Pillow
 
 ---
 
