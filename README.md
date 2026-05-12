@@ -29,10 +29,6 @@ Upload an image of a rice leaf to identify common diseases instantly.
 - **Dataset**: [Rice Leaf Diseases Dataset](https://www.kaggle.com/datasets/vbookshelf/rice-leaf-diseases) (Used for training).
 
 ---
-
-https://github.com/user-attachments/assets/53830072-36b1-4158-8c17-963a6df65c7f
-
-
 ## 🛠️ Tech Stack
 
 - **Backend**: [FastAPI](https://fastapi.tiangolo.com/) (Asynchronous, High Performance)
