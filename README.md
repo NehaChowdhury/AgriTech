@@ -1,3 +1,5 @@
+
+
 # 🌾 AgriTech: Smart Agriculture Decision Support System
 
 [![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
